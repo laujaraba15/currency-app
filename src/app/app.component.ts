@@ -9,18 +9,23 @@ import { Coin } from './coin.model';
 })
 export class AppComponent implements OnInit {
   filterCoins: string = '';
-  coins: Coin[] = [];
-  public slp: any;
+  coins: any;
+  slp: any
+  public coin1: any;
+  public coin2: any;
   public valueInput: any;
   public total: any;
+  term: any;
   constructor(private http: HttpClient) { }
   ngOnInit(): void {
     this.http
       .get<Coin[]>(
-        'https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=100&page=1&sparkline=false'
+        'https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=50&page=1&sparkline=false'
       )
       .subscribe((res: any) => {
         this.coins = res;
+        console.log(this.coins);
+
       });
 
     this.http
@@ -30,9 +35,11 @@ export class AppComponent implements OnInit {
       .subscribe((res: any) => {
         this.slp = res[0].current_price;
       });
+
+
   }
 
   calculate() {
-    this.total = this.valueInput * this.slp + ' USD';
+    this.total = this.coin1 / this.coin2;
   }
 }

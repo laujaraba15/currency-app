@@ -1,33 +1,62 @@
-<input type="number" class="input" [(ngModel)]="valueInput" name="valueInput" placeholder="Ingresa tu cantidad de slp
-">
-<button (click)="calculate()">Calculate</button>
-<h3>{{total}}</h3>
-<input type="text" class="form-control" placeholder="Ingresa tu moneda a buscar
-" [(ngModel)]="filterCoins">
+<input class="ml1 mt1" style="width: 300px;height: 30px;" placeholder="Search for a coin..." type="text"
+  [(ngModel)]="term">
+<div class="d-flex">
+  <table class="ml1 table table-dark">
+    <thead>
+      <tr>
+        <th scope="col">Icon</th>
+        <th scope="col">Coin</th>
+        <th scope="col">Symbol</th>
+        <th scope="col">Current Price</th>
+        <th scope="col">Price Change in last 24h</th>
+        <th scope="col">Total volume</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let coin of coins | filter:term">
+        <td>
+          <img class=" iconStyle" [src]="coin.image">
+        </td>
+        <td>{{coin.name}}</td>
+        <td>{{coin.symbol}}</td>
+        <td>{{coin.current_price}}</td>
+        <td [ngClass]="coin.price_change_percentage_24h >0?'text-success':'text-danger'">
+          {{coin.price_change_percentage_24h }}%
+        </td>
+        <td>{{coin.total_volume}}</td>
+      </tr>
+    </tbody>
+  </table>
 
-<table class="table table-dark">
-  <thead>
-    <tr>
-      <th scope="col">Icon</th>
-      <th scope="col">Coin</th>
-      <th scope="col">Symbol</th>
-      <th scope="col">Current Price</th>
-      <th scope="col">Price Change in last 24h</th>
-      <th scope="col">Total volume</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr *ngFor="let coin of coins | filter:filterCoins">
-      <td>
-        <img class="iconStyle" [src]="coin.image">
-      </td>
-      <td>{{coin.name}}</td>
-      <td>{{coin.symbol}}</td>
-      <td>{{coin.current_price}}</td>
-      <td [ngClass]="coin.price_change_percentage_24h >0?'text-success':'text-danger'">
-        {{coin.price_change_percentage_24h }}%
-      </td>
-      <td>{{coin.total_volume}}</td>
-    </tr>
-  </tbody>
-</table>
+  <!-- Calculator -->
+  <div class="ml2 w-50">
+    <h2 class="mb-5">Calculator</h2>
+    <div style="align-items: center;" class="d-flex">
+      <div style="justify-content: space-between;" class="w-75 d-flex">
+
+        <input type="number" class="input" [(ngModel)]="valueInput" name="valueInput" placeholder="Type the amount">
+        <p>
+          From
+        </p>
+        <select [(ngModel)]="coin1">
+          <option *ngFor="let coin of coins" [value]="coin.current_price">
+            {{coin.name}}
+          </option>
+        </select>
+
+        <p> To</p>
+        <select [(ngModel)]="coin2">
+          <option *ngFor="let coin of coins" [value]="coin.current_price">
+            {{coin.name}}
+          </option>
+        </select>
+      </div>
+
+      <button class="btn ml1 btn-primary" (click)="calculate()">Calculate</button>
+
+    </div>
+
+    <h3 class="table">{{total}}</h3>
+
+  </div>
+</div>
